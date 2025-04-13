@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import ProductCard from '@/components/ProductCard';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
-import { mockProducts } from '@/data/mockData';
+import { products } from '@/data/mockData';
 import { Product, Category } from '@/types/product';
 import { Search, Filter } from 'lucide-react';
 
@@ -26,7 +26,7 @@ const SearchPage = () => {
 
   const handleSearch = () => {
     // Filter products based on search term and category
-    const results = mockProducts.filter((product) => {
+    const results = products.filter((product) => {
       const matchesSearchTerm = searchTerm === '' || 
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
         product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||

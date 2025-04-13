@@ -4,7 +4,7 @@ import Layout from '@/components/layout/Layout';
 import { useAuth } from '@/context/AuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { packageBox, shoppingCart, userRound, dollarSign, store } from 'lucide-react';
+import { PackageX, ShoppingCart, UserRound, DollarSign, Store } from 'lucide-react';
 
 const VendorDashboardPage = () => {
   const { user } = useAuth();
@@ -82,7 +82,7 @@ const VendorDashboardPage = () => {
             <CardContent className="pt-6">
               <div className="flex items-center">
                 <div className="p-2 bg-marketplace-purple/10 rounded-full mr-4">
-                  <dollarSign className="h-6 w-6 text-marketplace-purple" />
+                  <DollarSign className="h-6 w-6 text-marketplace-purple" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Total Sales</p>
@@ -96,7 +96,7 @@ const VendorDashboardPage = () => {
             <CardContent className="pt-6">
               <div className="flex items-center">
                 <div className="p-2 bg-marketplace-orange/10 rounded-full mr-4">
-                  <shoppingCart className="h-6 w-6 text-marketplace-orange" />
+                  <ShoppingCart className="h-6 w-6 text-marketplace-orange" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Total Orders</p>
@@ -110,7 +110,7 @@ const VendorDashboardPage = () => {
             <CardContent className="pt-6">
               <div className="flex items-center">
                 <div className="p-2 bg-blue-100 rounded-full mr-4">
-                  <userRound className="h-6 w-6 text-blue-600" />
+                  <UserRound className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Customers</p>
@@ -124,7 +124,7 @@ const VendorDashboardPage = () => {
             <CardContent className="pt-6">
               <div className="flex items-center">
                 <div className="p-2 bg-green-100 rounded-full mr-4">
-                  <packageBox className="h-6 w-6 text-green-600" />
+                  <PackageX className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Products</p>
