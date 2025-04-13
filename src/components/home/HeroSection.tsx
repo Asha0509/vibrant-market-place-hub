@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import ProductShowcase3D from '../3d/ProductShowcase3D';
 
 const HeroSection = () => {
   return (
@@ -32,16 +33,14 @@ const HeroSection = () => {
             </div>
           </div>
           <div className="order-1 md:order-2 flex justify-center">
-            <div className="relative w-full max-w-lg h-64 md:h-80 animate-fadeIn">
+            <div className="relative w-full max-w-lg animate-fadeIn">
               <div className="absolute top-0 left-1/4 w-48 h-48 bg-marketplace-purple opacity-20 rounded-full filter blur-3xl"></div>
               <div className="absolute bottom-0 right-1/4 w-60 h-60 bg-marketplace-orange opacity-20 rounded-full filter blur-3xl"></div>
               <div className="absolute top-1/2 right-0 w-40 h-40 bg-marketplace-blue opacity-20 rounded-full filter blur-3xl"></div>
-              <div className="relative z-10 bg-white rounded-xl shadow-xl p-6 h-full flex items-center justify-center">
-                <img 
-                  src="/placeholder.svg" 
-                  alt="Featured products" 
-                  className="max-h-full object-contain"
-                />
+              
+              {/* Replace the static image with our 3D component */}
+              <div className="relative z-10 overflow-hidden rounded-xl">
+                <ProductShowcase3D />
               </div>
             </div>
           </div>

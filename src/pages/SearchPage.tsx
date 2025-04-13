@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import ProductCard from '@/components/ProductCard';
+import ProductCarousel3D from '@/components/3d/ProductCarousel3D';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -50,6 +51,14 @@ const SearchPage = () => {
     <Layout>
       <div className="marketplace-container py-8">
         <h1 className="text-3xl font-bold mb-6">Search Products</h1>
+        
+        {/* Add 3D Product Carousel at the top of search */}
+        {!hasSearched && (
+          <div className="mb-8 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-4">
+            <h2 className="text-xl font-semibold text-center mb-4">Featured Products</h2>
+            <ProductCarousel3D products={products.filter(p => p.featured).slice(0, 5)} />
+          </div>
+        )}
         
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <div className="grid md:grid-cols-3 gap-4 mb-4">
