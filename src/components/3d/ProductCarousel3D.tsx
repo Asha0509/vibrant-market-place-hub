@@ -11,9 +11,13 @@ function Product3D({ color, name, position, index, active, onClick }: any) {
   const [hovered, setHovered] = useState(false);
   
   // Animation with react-spring
-  const { scale, rotation } = useSpring({
+  const { scale } = useSpring({
     scale: hovered ? 1.15 : 1,
-    rotation: [0, hovered ? Math.PI / 8 : 0, 0],
+    config: { mass: 2, tension: 300, friction: 30 }
+  });
+  
+  const { rotationY } = useSpring({
+    rotationY: hovered ? Math.PI / 8 : 0,
     config: { mass: 2, tension: 300, friction: 30 }
   });
 
@@ -32,14 +36,14 @@ function Product3D({ color, name, position, index, active, onClick }: any) {
       ref={ref}
       position={position}
       scale={scale}
-      rotation={rotation}
+      rotation-y={rotationY}
       onClick={() => onClick(index)}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
       <mesh castShadow>
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial metalness={0.5} roughness={0.2} color={threeColor} />
+        <meshStandardMaterial color={threeColor} metalness={0.5} roughness={0.2} />
       </mesh>
       <Text
         position={[0, -0.8, 0]}

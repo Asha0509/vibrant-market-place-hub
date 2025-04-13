@@ -1,7 +1,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, PresentationControls, Environment, Float, ContactShadows, Text } from '@react-three/drei';
+import { PresentationControls, Environment, Float, ContactShadows, Text } from '@react-three/drei';
 import { Group, MathUtils, Color } from 'three';
 import { useLocation } from 'react-router-dom';
 
@@ -25,6 +25,7 @@ function Model(props: any) {
     }
   });
 
+  // Create Three.js colors explicitly
   const purpleColor = new Color("#9333ea");
   const orangeColor = new Color("#f97316");
 
@@ -50,7 +51,6 @@ function FloatingText({ children, position, rotation, color }: any) {
       rotation={rotation}
       fontSize={0.25}
       color={color}
-      font="/Inter-Bold.woff"
       anchorX="center"
       anchorY="middle"
     >
