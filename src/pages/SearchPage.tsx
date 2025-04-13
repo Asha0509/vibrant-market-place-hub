@@ -5,10 +5,15 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import ProductCard from '@/components/ProductCard';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 import { products } from '@/data/mockData';
 import { Product, Category } from '@/types/product';
-import { Search, Filter } from 'lucide-react';
+import { Search, ChevronDown } from 'lucide-react';
 
 const categoryOptions: { value: Category; label: string }[] = [
   { value: 'all', label: 'All Categories' },
@@ -66,30 +71,25 @@ const SearchPage = () => {
             </div>
             
             <div>
-              <Card>
-                <CardContent className="p-0">
-                  <Command>
-                    <CommandInput placeholder="Filter by category" />
-                    <CommandEmpty>No category found.</CommandEmpty>
-                    <CommandGroup>
-                      {categoryOptions.map((option) => (
-                        <CommandItem
-                          key={option.value}
-                          value={option.value}
-                          onSelect={(value) => {
-                            setSelectedCategory(value as Category);
-                          }}
-                          className="cursor-pointer"
-                        >
-                          <span className={selectedCategory === option.value ? "font-bold" : ""}>
-                            {option.label}
-                          </span>
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </Command>
-                </CardContent>
-              </Card>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="w-full flex justify-between items-center">
+                    {categoryOptions.find(cat => cat.value === selectedCategory)?.label || 'All Categories'}
+                    <ChevronDown className="h-4 w-4 ml-2" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-full">
+                  {categoryOptions.map((option) => (
+                    <DropdownMenuItem
+                      key={option.value}
+                      onClick={() => setSelectedCategory(option.value)}
+                      className={selectedCategory === option.value ? "font-bold" : ""}
+                    >
+                      {option.label}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
           
