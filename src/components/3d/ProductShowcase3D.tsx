@@ -2,13 +2,12 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, PresentationControls, Environment, Float, ContactShadows, Text } from '@react-three/drei';
-import { Group, MathUtils } from 'three';
+import { Group, MathUtils, Color } from 'three';
 import { useLocation } from 'react-router-dom';
 
 // 3D Model component
 function Model(props: any) {
   const group = useRef<Group>(null);
-  const { nodes, materials } = useGLTF('/placeholder.svg');
   
   // Animate the model
   useFrame((state) => {
@@ -26,15 +25,18 @@ function Model(props: any) {
     }
   });
 
+  const purpleColor = new Color("#9333ea");
+  const orangeColor = new Color("#f97316");
+
   return (
     <group ref={group} {...props} scale={1.5}>
       <mesh position={[0, 0, 0]} rotation={[0, 0, 0]}>
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="#9333ea" metalness={0.5} roughness={0.1} />
+        <meshStandardMaterial color={purpleColor} metalness={0.5} roughness={0.1} />
       </mesh>
       <mesh position={[0, 0, 0.75]} rotation={[0, 0, 0]}>
         <sphereGeometry args={[0.25, 32, 32]} />
-        <meshStandardMaterial color="#f97316" metalness={0.8} roughness={0.1} />
+        <meshStandardMaterial color={orangeColor} metalness={0.8} roughness={0.1} />
       </mesh>
     </group>
   );

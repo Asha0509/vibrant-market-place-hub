@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useSpring, animated } from '@react-spring/three';
 import { Text, PresentationControls, Environment, ContactShadows } from '@react-three/drei';
-import { Group, MathUtils } from 'three';
+import { Group, MathUtils, Color } from 'three';
 
 // Individual 3D Product Card
 function Product3D({ color, name, position, index, active, onClick }: any) {
@@ -24,6 +24,9 @@ function Product3D({ color, name, position, index, active, onClick }: any) {
     }
   });
 
+  // Convert color string to Three.js color
+  const threeColor = new Color(color);
+
   return (
     <animated.group 
       ref={ref}
@@ -36,12 +39,12 @@ function Product3D({ color, name, position, index, active, onClick }: any) {
     >
       <mesh castShadow>
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={color} metalness={0.5} roughness={0.2} />
+        <meshStandardMaterial metalness={0.5} roughness={0.2} color={threeColor} />
       </mesh>
       <Text
         position={[0, -0.8, 0]}
         fontSize={0.2}
-        color="#000"
+        color="black"
         anchorX="center"
         anchorY="middle"
       >
