@@ -1,24 +1,23 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, PresentationControls, Environment, Float, ContactShadows, Text } from '@react-three/drei';
-import { Group, MathUtils } from 'three';
+import { PresentationControls, Environment, Float, ContactShadows, Text } from '@react-three/drei';
 import { useLocation } from 'react-router-dom';
+import * as THREE from 'three';
 
-// 3D Model component
+// 3D Model component that doesn't rely on external files
 function Model(props: any) {
-  const group = useRef<Group>(null);
-  const { nodes, materials } = useGLTF('/placeholder.svg');
+  const group = useRef<THREE.Group>(null);
   
   // Animate the model
   useFrame((state) => {
     if (group.current) {
-      group.current.rotation.y = MathUtils.lerp(
+      group.current.rotation.y = THREE.MathUtils.lerp(
         group.current.rotation.y,
         state.pointer.x * Math.PI / 8,
         0.075
       );
-      group.current.rotation.x = MathUtils.lerp(
+      group.current.rotation.x = THREE.MathUtils.lerp(
         group.current.rotation.x,
         state.pointer.y * Math.PI / 8,
         0.075
@@ -48,7 +47,6 @@ function FloatingText({ children, position, rotation, color }: any) {
       rotation={rotation}
       fontSize={0.25}
       color={color}
-      font="/Inter-Bold.woff"
       anchorX="center"
       anchorY="middle"
     >

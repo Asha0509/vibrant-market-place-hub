@@ -1,13 +1,13 @@
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useSpring, animated } from '@react-spring/three';
 import { Text, PresentationControls, Environment, ContactShadows } from '@react-three/drei';
-import { Group, MathUtils } from 'three';
+import * as THREE from 'three';
 
 // Individual 3D Product Card
 function Product3D({ color, name, position, index, active, onClick }: any) {
-  const ref = useRef<Group>(null);
+  const ref = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   
   // Animation with react-spring
