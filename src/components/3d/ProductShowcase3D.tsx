@@ -1,94 +1,72 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment, ContactShadows, Float, Text } from '@react-three/drei';
+import { useGLTF, PresentationControls, Environment, Float, ContactShadows, Text } from '@react-three/drei';
+import { Group, MathUtils } from 'three';
 import { useLocation } from 'react-router-dom';
-import { Color } from 'three';
 
-// Animated Showcase Component
-const AnimatedShowcase = () => {
-  const cubeRef = useRef<THREE.Mesh>(null);
-  const sphereRef = useRef<THREE.Mesh>(null);
-  const torusRef = useRef<THREE.Mesh>(null);
-
-  // Animate the meshes on each frame
+// 3D Model component
+function Model(props: any) {
+  const group = useRef<Group>(null);
+  const { nodes, materials } = useGLTF('/placeholder.svg');
+  
+  // Animate the model
   useFrame((state) => {
-    const time = state.clock.getElapsedTime();
-    
-    if (cubeRef.current) {
-      cubeRef.current.rotation.x = Math.sin(time * 0.3) * 0.4;
-      cubeRef.current.rotation.y = Math.sin(time * 0.2) * 0.5;
-    }
-    
-    if (sphereRef.current) {
-      sphereRef.current.position.y = Math.sin(time * 0.5) * 0.5;
-      sphereRef.current.position.x = Math.sin(time * 0.3) * 0.5;
-    }
-    
-    if (torusRef.current) {
-      torusRef.current.rotation.x = time * 0.2;
-      torusRef.current.rotation.y = time * 0.1;
+    if (group.current) {
+      group.current.rotation.y = MathUtils.lerp(
+        group.current.rotation.y,
+        state.pointer.x * Math.PI / 8,
+        0.075
+      );
+      group.current.rotation.x = MathUtils.lerp(
+        group.current.rotation.x,
+        state.pointer.y * Math.PI / 8,
+        0.075
+      );
     }
   });
 
   return (
-    <>
-      <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
-        <mesh ref={cubeRef} position={[-2, 0, 0]}>
-          <boxGeometry args={[1.5, 1.5, 1.5]} />
-          <meshStandardMaterial 
-            color={new Color("#9333ea")}
-            metalness={0.4}
-            roughness={0.2}
-          />
-        </mesh>
-      </Float>
-      
-      <Float speed={1.5} rotationIntensity={0.4} floatIntensity={0.7}>
-        <mesh ref={sphereRef} position={[0, 0, 1]}>
-          <sphereGeometry args={[1, 32, 32]} />
-          <meshStandardMaterial 
-            color={new Color("#f97316")}
-            metalness={0.4} 
-            roughness={0.2}
-          />
-        </mesh>
-      </Float>
-      
-      <Float speed={3} rotationIntensity={0.6} floatIntensity={0.3}>
-        <mesh ref={torusRef} position={[2, 0, 0]}>
-          <torusGeometry args={[0.8, 0.3, 16, 32]} />
-          <meshStandardMaterial 
-            color={new Color("#2563eb")}
-            metalness={0.4}
-            roughness={0.2}
-          />
-        </mesh>
-      </Float>
-      
-      <Text
-        position={[0, -2, 0]}
-        fontSize={0.5}
-        color="#9333ea"
-        anchorX="center"
-        anchorY="middle"
-      >
-        Discover Amazing Products
-      </Text>
-    </>
+    <group ref={group} {...props} scale={1.5}>
+      <mesh position={[0, 0, 0]} rotation={[0, 0, 0]}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color="#9333ea" metalness={0.5} roughness={0.1} />
+      </mesh>
+      <mesh position={[0, 0, 0.75]} rotation={[0, 0, 0]}>
+        <sphereGeometry args={[0.25, 32, 32]} />
+        <meshStandardMaterial color="#f97316" metalness={0.8} roughness={0.1} />
+      </mesh>
+    </group>
   );
-};
+}
 
-// Enhanced 3D Product Showcase component
+// 3D Text component
+function FloatingText({ children, position, rotation, color }: any) {
+  return (
+    <Text
+      position={position}
+      rotation={rotation}
+      fontSize={0.25}
+      color={color}
+      font="/Inter-Bold.woff"
+      anchorX="center"
+      anchorY="middle"
+    >
+      {children}
+    </Text>
+  );
+}
+
+// Main 3D Product Showcase component
 const ProductShowcase3D = ({ size = "large" }: { size?: "small" | "medium" | "large" }) => {
-  const [height, setHeight] = useState("450px");
+  const [height, setHeight] = useState("400px");
   const location = useLocation();
   
   // Adjust height based on component size prop
   useEffect(() => {
-    if (size === "small") setHeight("250px");
-    else if (size === "medium") setHeight("350px");
-    else setHeight("450px");
+    if (size === "small") setHeight("200px");
+    else if (size === "medium") setHeight("300px");
+    else setHeight("400px");
   }, [size]);
 
   // Only render the 3D showcase on certain routes for performance reasons
@@ -97,15 +75,35 @@ const ProductShowcase3D = ({ size = "large" }: { size?: "small" | "medium" | "la
   }
 
   return (
-    <div className="relative w-full overflow-hidden rounded-xl transition-all duration-500 hover:shadow-xl" style={{ height }}>
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-50/80 to-indigo-50/80 z-0" />
-      <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 8], fov: 50 }}>
+    <div style={{ height, width: "100%" }}>
+      <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 4], fov: 50 }}>
+        <color attach="background" args={['#f5f3ff']} />
         <ambientLight intensity={0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
         
-        <AnimatedShowcase />
+        <PresentationControls
+          global
+          rotation={[0.13, 0.1, 0]}
+          polar={[-0.4, 0.2]}
+          azimuth={[-1, 0.75]}
+          config={{ mass: 2, tension: 400 }}
+          snap={{ mass: 4, tension: 400 }}
+        >
+          <Float rotationIntensity={0.4}>
+            <Model />
+            <FloatingText position={[0, 1.25, 0]} color="#6d28d9" rotation={[0, 0, 0]}>
+              Amazing Products
+            </FloatingText>
+            <FloatingText position={[-1.5, 0, 0]} color="#f97316" rotation={[0, -Math.PI / 2, 0]}>
+              Unique Items
+            </FloatingText>
+            <FloatingText position={[0, -1.25, 0]} color="#2563eb" rotation={[0, 0, 0]}>
+              Shop Now
+            </FloatingText>
+          </Float>
+        </PresentationControls>
         
-        <ContactShadows position={[0, -3, 0]} opacity={0.6} scale={12} blur={2.5} far={4} />
+        <ContactShadows position={[0, -1.5, 0]} opacity={0.75} scale={10} blur={2.5} far={4} />
         <Environment preset="city" />
       </Canvas>
     </div>

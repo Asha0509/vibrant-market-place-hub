@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import ProductCard from '@/components/ProductCard';
 import ProductCarousel3D from '@/components/3d/ProductCarousel3D';
 import { 
@@ -29,6 +31,7 @@ const SearchPage = () => {
   const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = () => {
+    // Filter products based on search term and category
     const results = products.filter((product) => {
       const matchesSearchTerm = searchTerm === '' || 
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -44,34 +47,20 @@ const SearchPage = () => {
     setHasSearched(true);
   };
 
-  useEffect(() => {
-    const searchContainer = document.querySelector('.search-container');
-    const resultsContainer = document.querySelector('.results-container');
-    
-    setTimeout(() => {
-      searchContainer?.classList.add('animate-fade-in');
-    }, 300);
-    
-    if (hasSearched) {
-      setTimeout(() => {
-        resultsContainer?.classList.add('animate-fade-in');
-      }, 600);
-    }
-  }, [hasSearched]);
-
   return (
     <Layout>
       <div className="marketplace-container py-8">
-        <h1 className="text-3xl font-bold mb-6 animate-fade-in">Search Products</h1>
+        <h1 className="text-3xl font-bold mb-6">Search Products</h1>
         
+        {/* Add 3D Product Carousel at the top of search */}
         {!hasSearched && (
-          <div className="mb-8 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-4 animate-fade-in">
+          <div className="mb-8 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-4">
             <h2 className="text-xl font-semibold text-center mb-4">Featured Products</h2>
             <ProductCarousel3D products={products.filter(p => p.featured).slice(0, 5)} />
           </div>
         )}
         
-        <div className="search-container bg-white rounded-lg shadow-md p-6 mb-8 opacity-0 transition-all duration-700">
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <div className="grid md:grid-cols-3 gap-4 mb-4">
             <div className="md:col-span-2">
               <div className="relative">
@@ -123,7 +112,7 @@ const SearchPage = () => {
         </div>
         
         {hasSearched && (
-          <div className="results-container opacity-0 transition-all duration-700">
+          <div>
             <h2 className="text-xl font-semibold mb-4">
               {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} found
             </h2>
@@ -131,9 +120,7 @@ const SearchPage = () => {
             {searchResults.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {searchResults.map((product) => (
-                  <div key={product.id} className="transform transition-all duration-300 hover:scale-105">
-                    <ProductCard product={product} />
-                  </div>
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             ) : (
